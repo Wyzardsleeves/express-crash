@@ -63,3 +63,14 @@ res.render('index', {
   <li><%= user.first_name %></li>
 <% }) %>
 </ul>
+
+//form subission
+<form method="POST" action="users/add">     //place in form to connect with request
+app.post('/users/add', function(req, res){  //create post request
+  console.log("form submitted");
+})
+
+//add validation
+npm install express-validator --save                    //install the validator
+var expressValidator = require('express-validator');    //
+app.use(expressValidator(middlewareOptions));           //adds middleware

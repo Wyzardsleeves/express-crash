@@ -1,8 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var path = require('path')
+var path = require('path');
 var app = express();
-
+var expressValidator = require('express-validator');
 /*
 var logger = function(req, res, next){
   console.log("Logging....");
@@ -20,7 +20,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 //set static app
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
+
+//auth middleware
+app.use(expressValidator(middlewareOptions));
+
 
 var users = [
   {
@@ -49,6 +53,24 @@ app.get('/', function(req, res){
     description: "People we use to take money from so we can put our kids through college",
     users: users
   });
+});
+
+app.post('/users/add', function(req, res){
+
+  req.checkBody(first_name).notEmpty();
+
+  var errors = req.validationErrors();
+
+  if(errors){
+    console.log('ERRORS');
+  }else{
+    var newUser = {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      email: req.body.email
+    };
+    console.log('SUCCESS');
+  }
 });
 
 app.listen(3000, function(){
